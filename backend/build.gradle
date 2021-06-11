@@ -1,0 +1,34 @@
+plugins {
+	id 'org.springframework.boot' version '2.5.1'
+	id 'java'
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+}
+
+group = 'com.physicssite'
+version = '0.0.1'
+sourceCompatibility = '11'
+
+repositories {
+	mavenCentral()
+}
+
+configurations {
+	developmentOnly
+	runtimeClasspath {
+		extendsFrom developmentOnly
+	}
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	developmentOnly("org.springframework.boot:spring-boot-devtools")
+}
+
+bootRun {
+	sourceResources sourceSets.main
+}
+
+test {
+	useJUnitPlatform()
+}

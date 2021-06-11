@@ -1,0 +1,4 @@
+tasks.register('build', Exec) {
+    commandLine 'npm run build'
+    commandLine 'cmd', '/c', 'npm run build'
+}
