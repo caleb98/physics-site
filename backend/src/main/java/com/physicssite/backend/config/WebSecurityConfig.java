@@ -2,8 +2,6 @@ package com.physicssite.backend.config;
 
 import javax.servlet.http.HttpSession;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -25,8 +23,6 @@ import com.physicssite.backend.user.SiteUserDetailsService;
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-
-	private static final Logger logger = LoggerFactory.getLogger(WebSecurityConfig.class);
 
 	@Bean
 	public RedirectStrategy redirectStrategy() {
