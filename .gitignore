@@ -33,6 +33,8 @@ build
 
 # DONT ignore the gradle wrapper jar
 !gradle/wrapper/gradle-wrapper.jar
+!frontend/gradle/wrapper/gradle-wrapper.jar
+!backend/gradle/wrapper/gradle-wrapper.jar
 
 # Logs and databases #
 ######################
