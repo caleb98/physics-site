@@ -23,11 +23,6 @@ import com.physicssite.backend.user.SiteUserDetailsService;
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-
-	@Bean
-	public RedirectStrategy redirectStrategy() {
-		return new DefaultRedirectStrategy();
-	}
 	
 	@Bean
 	@Override

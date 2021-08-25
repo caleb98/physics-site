@@ -15,17 +15,35 @@ public class CourseController {
 	@Autowired
 	private CourseRepository courseRepository;
 	
+	@Autowired
+	private CourseDataService courseDataService;
+	
 	@GetMapping("/all")
-	public @ResponseBody Iterable<Course> getAllCourses() {
+	public @ResponseBody Iterable<CourseListing> getAllCourses() {
 		return courseRepository.findAll();
 	}
 	
 	@PostMapping("/add")
-	public @ResponseBody String addNewCourse(@RequestParam String name, @RequestParam String splashImageFile) {
-		Course course = new Course();
-		course.setName(name);
-		course.setSplashImageFile(splashImageFile);
-		courseRepository.save(course);
+	public @ResponseBody String addNewCourse(@RequestParam String name, @RequestParam String description) {
+		// Create the course listing
+		CourseListing listing = new CourseListing();
+		listing.setName(name);
+		
+		// Attempt to create the course data
+		Course course = courseDataService.createCourseData(listing);
+		if(course == null) {
+			return "Unable to create course! Error creating course data file.";
+		}
+		
+		// Setup the course data and try to save it
+		course.setDescription(description);
+		if(!courseDataService.saveCourse(listing, course)) {
+			return "Unable to create course! Error saving course data.";
+		}
+		
+		// Everything was successful, so add the course listing to the database.
+		courseRepository.save(listing);
+		
 		return "Added!";
 	}
 	
