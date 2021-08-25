@@ -31,6 +31,9 @@ build
 *.tar
 *.zip
 
+# DONT ignore the gradle wrapper jar
+!gradle/wrapper/gradle-wrapper.jar
+
 # Logs and databases #
 ######################
 *.log
