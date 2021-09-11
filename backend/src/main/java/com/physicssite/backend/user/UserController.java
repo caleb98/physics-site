@@ -5,14 +5,18 @@ import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.physicssite.backend.dto.ServerResponse;
+import com.physicssite.backend.dto.UserInfoResponse;
 
 @Controller
 public class UserController {
@@ -28,17 +32,32 @@ public class UserController {
 	@Autowired
 	private UserRepository userRepository;
 	
-	@GetMapping(path="/login")
+	@GetMapping(path="/user/data")
+	public @ResponseBody UserInfoResponse userData() {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if(auth == null) {
+			return new UserInfoResponse("Not logged in.");
+		}
+		
+		User user = userRepository.findByUsername(auth.getName());
+		if(user == null) {
+			return new UserInfoResponse("Username not found.");
+		}
+		
+		return new UserInfoResponse(user);
+	}
+	
+	@GetMapping("/login")
 	public String loginPage() {
 		return "login.html";
 	}
 	
-	@GetMapping(path="/register")
+	@GetMapping("/register")
 	public String registerPage() {
 		return "register.html";
 	}
 	
-	@PostMapping(path="/register")
+	@PostMapping("/register")
 	public @ResponseBody ServerResponse addNewUser(
 			@RequestParam String username, 
 			@RequestParam String email, 

@@ -84,6 +84,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/register").permitAll()
 				.antMatchers("/login").permitAll()
 				.antMatchers("/user").permitAll()
+				.antMatchers("/logout").permitAll()
+				.antMatchers("/user/**").permitAll()
 				.antMatchers("/course").authenticated()
 				.antMatchers("/admin").access("hasRole('ROLE_ADMIN')")
 				.and()
@@ -94,7 +96,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.permitAll()
 				.and()
 			.logout()
-				.logoutUrl("/logout");
+				.logoutUrl("/logout")
+				.logoutSuccessUrl("/")
+				.invalidateHttpSession(true)
+				.deleteCookies("JSESSIONID");
 	}
 	
 }
