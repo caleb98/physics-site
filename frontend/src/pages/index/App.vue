@@ -1,4 +1,5 @@
 <template>
+	<CSRFTokenManager/>
 	<div class="container-fluid">
 		<div class="row">
 			<Navbar/>
@@ -8,11 +9,13 @@
 
 
 <script>
+import CSRFTokenManager from '../../components/CSRFTokenManager.vue'
 import Navbar from '../../components/Navbar.vue'
 
 export default {
 	name: 'App',
 	components: {
+		CSRFTokenManager,
 		Navbar
 	}
 }

@@ -3,8 +3,6 @@ package com.physicssite.backend.user;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -31,7 +29,7 @@ public class UserController {
 	private UserRepository userRepository;
 	
 	@GetMapping(path="/login")
-	public String loginPage(HttpServletRequest request) {
+	public String loginPage() {
 		return "login.html";
 	}
 	

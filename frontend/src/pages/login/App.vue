@@ -1,6 +1,7 @@
 <!-- Login Page -->
 
 <template>
+	<CSRFTokenManager/>
 	<div>
 		<div class="container-fluid">
 			<div class="row">
@@ -19,12 +20,14 @@
 
 
 <script>
+import CSRFTokenManager from '../../components/CSRFTokenManager.vue'
 import Navbar from '../../components/Navbar.vue'
 import LoginForm from '../../components/LoginForm.vue'
 
 export default {
 	name: 'App',
 	components: {
+		CSRFTokenManager,
 		Navbar,
 		LoginForm
 	}

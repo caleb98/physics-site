@@ -29,14 +29,6 @@
 
 <script>
 import $ from 'jquery';
-import Cookies from 'js-cookie'
-
-$(function () {
-  // eslint-disable-next-line no-unused-vars
-  $(document).ajaxSend(function(e, xhr, options) {
-    xhr.setRequestHeader("X-XSRF-TOKEN", Cookies.get('XSRF-TOKEN'));
-  });
-});
 
 export default {
 	name: 'RegistrationForm',
@@ -53,7 +45,7 @@ export default {
 		validateInput() {
 			// Validate username length
 			if(this.username.length < 8 || this.username.length > 25) {
-				this.error = 'Username must be 8 to 25 characters long.'
+				this.error = 'Username must be 8 to 25 characters long.';
 				return false;
 			}
 
@@ -83,7 +75,7 @@ export default {
 			}
 
 			// Everything is good to go
-			this.error = null
+			this.error = null;
 			return true;
 		},
 

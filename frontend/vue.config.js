@@ -20,9 +20,20 @@ module.exports = {
 			filename: 'register.html',
 			title: 'Register',
 			chunks: ['chunk-vendors', 'chunk-common', 'register']
+		},
+		'admin': {
+			entry: 'src/pages/admin/main.js',
+			template: 'public/admin.html',
+			filename: 'admin.html',
+			title: 'Admin',
+			chunks: ['chunk-vendors', 'chunk-common', 'admin']
 		}
 	},
 	devServer: {
-		port: 3000
+		port: 3000,
+		proxy: "http://localhost:8080"
+	},
+	configureWebpack: {
+		devtool: 'source-map'
 	}
 }
