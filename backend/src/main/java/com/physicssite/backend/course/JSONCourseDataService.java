@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,12 +33,18 @@ public class JSONCourseDataService implements CourseDataService {
 	@Autowired
 	private Gson gson;
 	
+	private String error;
+	
 	@PostConstruct
 	private void postConstruct() {
 		COURSE_JSON_DIR = new File(COURSE_JSON_DIR_NAME + "/courses");
 		if(!COURSE_JSON_DIR.exists()) {
 			COURSE_JSON_DIR.mkdirs();
 		}
+	}
+	
+	public String getError() {
+		return error;
 	}
 
 	public List<Course> listCourses() {
@@ -65,10 +73,14 @@ public class JSONCourseDataService implements CourseDataService {
 		File jsonFile = new File(COURSE_JSON_DIR, getFileName(courseName));
 		try {
 			if(!jsonFile.createNewFile()) {
-				logger.error("Error creating new course data file: data file already exists.");
+				error = String.format(
+						"Error creating new course '%s': a data file for that course already exists.", 
+						courseName);
+				logger.error(error);
 				return false;
 			}
 		} catch (IOException e) {
+			error = "An IO error occurred while creating course data";
 			logger.error("Error creating course data file: {}", e.getMessage());
 			return false;
 		}
@@ -80,6 +92,7 @@ public class JSONCourseDataService implements CourseDataService {
 			gson.toJson(course, Course.class, writer);
 			writer.flush();
 		} catch (IOException e) {
+			error = "An IO error occurred while writing course data.";
 			logger.error("Error writing course data file: {}", e.getMessage());
 			return false;
 		}
@@ -93,6 +106,31 @@ public class JSONCourseDataService implements CourseDataService {
 		File jsonFile = new File(COURSE_JSON_DIR, getFileName(courseName));
 		jsonFile.delete();
 	}
+	
+	@Override
+	public boolean renameCourse(String oldName, String newName) {
+		// Check for course name
+		List<Course> courses = listCourses();
+		for(Course c : courses) {
+			if(c.getName().equals(newName)) {
+				error = String.format(
+						"A course with the name %s already exists.",
+						newName);
+				return false;
+			}
+		}
+		
+		// Open old file
+		Course course = loadCourse(oldName);
+		course.setName(newName);
+		if(saveCourse(course)) {
+			deleteCourse(oldName);
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
 
 	@Override
 	public Course loadCourse(String courseName) {
@@ -104,6 +142,7 @@ public class JSONCourseDataService implements CourseDataService {
 			Course course = gson.fromJson(reader, Course.class);
 			return course;
 		} catch (IOException e) {
+			error = "An IO error occurred while accessing course data.";
 			logger.error("Error reading course data file: {}", e.getMessage());
 			return null;
 		}
@@ -119,11 +158,17 @@ public class JSONCourseDataService implements CourseDataService {
 			gson.toJson(course, Course.class, writer);
 			writer.flush();
 		} catch (IOException e) {
+			error = "An IO error occurred while attempting to save the course data.";
 			logger.error("Error writing course data file: {}", e.getMessage());
 			return false;
 		}
 		
 		return true;
+	}
+	
+	@Override
+	public File getCourseFile(String courseName) {
+		return new File(COURSE_JSON_DIR, getFileName(courseName));
 	}
 	
 	private String getFileName(String courseName) {

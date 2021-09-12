@@ -5,7 +5,7 @@
 	</div>
 	<div class="input-group mb-3">
 		<span class="input-group-text">Description</span>
-		<textarea class="form-control" rows="4" v-model="courseDesc"></textarea>
+		<textarea class="form-control" rows="4" aria-label="Description" v-model="courseDesc"></textarea>
 	</div>
 	<div>
 		<button type="button" class="btn btn-primary me-3" @click="submit">Create</button>
@@ -14,7 +14,7 @@
 	<p class="text-danger" v-if="message">{{message}}</p>
 </template>
 
-<script>
+<script scoped>
 import $ from 'jquery'
 
 export default {

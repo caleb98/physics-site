@@ -8,6 +8,13 @@ public class Unit {
 	private String description;
 	private ArrayList<Lesson> lessons;
 	
+	@SuppressWarnings("unused")
+	private Unit() {
+		title = "";
+		description = "";
+		lessons = new ArrayList<>();
+	}
+	
 	public Unit(String title, String description) {
 		this.title = title;
 		this.description =description;

@@ -15,13 +15,17 @@
 				<ul class="navbar-nav container-fluid">
 
 					<!-- User Buttons -->
-					<li class="nav-item ms-auto" v-if="!isLoggedIn">
+					<li class="ms-md-auto"></li>
+					<li class="nav-item" v-if="!isLoggedIn">
 						<a class="nav-link" href="/login">Login</a>
 					</li>
 					<li class="nav-item" v-if="!isLoggedIn">
 						<a class="nav-link" href="/register">Register</a>
 					</li>
-					<li class="nav-item ms-auto" v-if="isLoggedIn">
+					<li class="nav-item" v-if="isLoggedIn && userData.auths.includes('ROLE_ADMIN')">
+						<a class="nav-link" href="/admin">Admin</a>
+					</li>
+					<li class="nav-item" v-if="isLoggedIn">
 						<a class="nav-link" href="/account">Account</a>
 					</li>
 					<li class="nav-item" v-if="isLoggedIn">
@@ -47,7 +51,8 @@ export default {
 
 	data() {
 		return {
-			isLoggedIn: false
+			isLoggedIn: false,
+			userData: null
 		}
 	},
 
@@ -56,8 +61,13 @@ export default {
 			$.get(
 				"/user/data",
 				(data) => {
-					if(!data.error) {
+					if(!data.isError) {
 						this.isLoggedIn = true;
+						this.userData = {
+							username: data.username,
+							email: data.email,
+							auths: data.auths
+						}
 					}
 				}
 			);
@@ -77,6 +87,10 @@ export default {
 
 <style scoped>
 #navbar {
-	background-color: rgb(255, 140, 0);
+	background-color: var(--primary-color);
+}
+
+.nav-link {
+	font-weight: 500;
 }
 </style>

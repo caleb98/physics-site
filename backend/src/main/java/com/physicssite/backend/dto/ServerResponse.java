@@ -23,7 +23,7 @@ public class ServerResponse {
 		this.message = message;
 	}
 	
-	public boolean isError() {
+	public boolean getIsError() {
 		return isError;
 	}
 	
